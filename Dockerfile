@@ -1,7 +1,7 @@
 #Author:KD
 
 FROM centos:centos7
-MAINTAINER Kurt Dillen <kurt.dillen@dls-belgium.com>
+MAINTAINER Daniel Berredo <danielberredo@gmail.com>
 
 # Environment variables
 ENV \
@@ -24,11 +24,6 @@ RUN \
 
 # Add supervisor configuration
 ADD ./container-files/supervisord.conf /etc/supervisord.conf
-
-# Add custom bash profile scripts
-#ADD ./container-files/etc/profile.d/bash_audit.sh /etc/profile.d/bash_audit.sh
-ADD ./container-files/etc/profile.d/colorls.sh /etc/profile.d/colorls.sh
-ADD ./container-files/etc/profile.d/custom.sh /etc/profile.d/custom.sh
 
 # Sudo requires a tty. fix that.
 RUN sed -i 's/.*requiretty$/#Defaults requiretty/' /etc/sudoers
@@ -63,8 +58,7 @@ RUN mkdir -p /usr/local/tmp/zabbix_sql
 ADD ./container-files/sql/* /usr/local/tmp/zabbix_sql/
 ADD ./container-files/zabbix/* /tmp/
 
-# Create the data volume for postgresql and export the PostgreSQL Port
-VOLUME ["/var/lib/pgsql"]
+# Export the PostgreSQL Port
 EXPOSE 5432
 
 # Start PostgreSQL
